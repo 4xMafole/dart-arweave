@@ -8,13 +8,13 @@ part of 'transaction.dart';
 
 Transaction _$TransactionFromJson(Map<String, dynamic> json) {
   return Transaction(
-    format: json['format'] as int ?? 1,
+    format: json['format'] as int,
     id: json['id'] as String,
     lastTx: json['last_tx'] as String,
     owner: json['owner'] as String,
     tags: (json['tags'] as List)
-        ?.map((e) => e == null ? null : Tag.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+        .map((e) => Tag.fromJson(e as Map<String, dynamic>))
+        .toList(),
     target: json['target'] as String,
     quantity: _stringToBigInt(json['quantity'] as String),
     data: json['data'] as String,

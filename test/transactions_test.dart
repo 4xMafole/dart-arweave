@@ -20,8 +20,10 @@ void main() {
     test('create, sign, and verify data transaction', () async {
       final wallet = await getTestWallet();
 
-      final transaction = await client.transactions
-          .prepare(Transaction.withBlobData(data: utf8.encode('test')), wallet);
+      final transaction = await client.transactions.prepare(
+          Transaction.withBlobData(
+              data: Uint8List.fromList(utf8.encode('test'))),
+          wallet);
 
       transaction
         ..addTag('test-tag-1', 'test-value-1')
@@ -136,8 +138,8 @@ void main() {
       final transaction = await client.transactions
           .get('8C6yYu5pWMADLSd65wTnrzgN-9eLj9sFbyVC3prSaFs');
 
-      await transaction
-          .setData(utf8.encode('{"name":"Blockchains & Cryptocurrencies"}'));
+      await transaction!.setData(Uint8List.fromList(
+          utf8.encode('{"name":"Blockchains & Cryptocurrencies"}')));
 
       expect(
         client.transactions.upload(transaction, dataOnly: true).drain(),
@@ -149,7 +151,7 @@ void main() {
       final data = utf8.encode('Hello world!');
       final wallet = await getTestWallet();
       final transaction = await client.transactions.prepare(
-        Transaction.withBlobData(data: data),
+        Transaction.withBlobData(data: Uint8List.fromList(data)),
         wallet,
       );
 
@@ -157,7 +159,7 @@ void main() {
 
       final uploader = await client.transactions.getUploader(transaction);
       final reloadedUploader = await TransactionUploader.deserialize(
-          uploader.serialize(), data, client.api);
+          uploader.serialize(), Uint8List.fromList(data), client.api);
 
       // Technically this should fail since the test wallet has no AR but the
       // HTTP API doesn't return an error so there's nothing we can do about it.
@@ -168,7 +170,7 @@ void main() {
 
     test('get and verify transaction', () async {
       final transaction = await client.transactions.get(liveDataTxId);
-      expect(await transaction.verify(), isTrue);
+      expect(await transaction!.verify(), isTrue);
     });
   });
 }

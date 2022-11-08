@@ -27,7 +27,7 @@ class DataItem implements TransactionBase {
 
   @override
   List<Tag> get tags => _tags;
-  List<Tag> _tags;
+  late List<Tag> _tags;
 
   /// The unencoded data associated with this [DataItem].
   ///
@@ -43,46 +43,46 @@ class DataItem implements TransactionBase {
   ///
   /// [DataItem.withJsonData()] and [DataItem.withBlobData()] are the recommended ways to construct data items.
   DataItem({
-    String id,
-    String owner,
-    this.target,
-    this.nonce,
-    List<Tag> tags,
-    String data,
-    Uint8List dataBytes,
-    String signature,
-  })  : _id = id,
+    String? id,
+    String? owner,
+    required this.target,
+    required this.nonce,
+    List<Tag>? tags,
+    String? data,
+    Uint8List? dataBytes,
+    String? signature,
+  })  : _id = id!,
         _owner = owner ?? '',
         data = data != null
             ? decodeBase64ToBytes(data)
             : (dataBytes ?? Uint8List(0)),
-        _signature = signature {
+        _signature = signature! {
     _tags = tags ?? [];
   }
 
   /// Constructs a [DataItem] with the specified JSON data and appropriate Content-Type tag.
   factory DataItem.withJsonData({
-    String owner,
+    required String owner,
     String target = '',
     String nonce = '',
-    List<Tag> tags,
-    @required Object data,
+    List<Tag>? tags,
+    required Object data,
   }) =>
       DataItem.withBlobData(
         owner: owner,
         target: target,
         nonce: nonce,
         tags: tags,
-        data: utf8.encode(json.encode(data)),
+        data: Uint8List.fromList(utf8.encode(json.encode(data))),
       )..addTag('Content-Type', 'application/json');
 
   /// Constructs a [DataItem] with the specified blob data.
   factory DataItem.withBlobData({
-    String owner,
+    required String owner,
     String target = '',
     String nonce = '',
-    List<Tag> tags,
-    @required Uint8List data,
+    List<Tag>? tags,
+    required Uint8List data,
   }) =>
       DataItem(
         owner: owner,

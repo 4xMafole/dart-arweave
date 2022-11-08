@@ -12,7 +12,7 @@ import '../utils.dart';
 
 class Wallet {
   RsaKeyPair _keyPair;
-  Wallet({KeyPair keyPair}) : _keyPair = keyPair;
+  Wallet({required KeyPair keyPair}) : _keyPair = keyPair as RsaKeyPair;
 
   static Future<Wallet> generate() async {
     final secureRandom = FortunaRandom();
@@ -41,11 +41,11 @@ class Wallet {
 
     return Wallet(
       keyPair: RsaKeyPairData(
-        e: encodeBigIntToBytes(privK.publicExponent),
-        n: encodeBigIntToBytes(privK.modulus),
-        d: encodeBigIntToBytes(privK.privateExponent),
-        p: encodeBigIntToBytes(privK.p),
-        q: encodeBigIntToBytes(privK.q),
+        e: encodeBigIntToBytes(privK.publicExponent!),
+        n: encodeBigIntToBytes(privK.modulus!),
+        d: encodeBigIntToBytes(privK.privateExponent!),
+        p: encodeBigIntToBytes(privK.p!),
+        q: encodeBigIntToBytes(privK.q!),
       ),
     );
   }

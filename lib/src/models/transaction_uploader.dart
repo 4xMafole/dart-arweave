@@ -50,13 +50,13 @@ class TransactionUploader {
   }
 
   TransactionUploader._(
-      {ArweaveApi api,
-      int chunkIndex,
-      bool txPosted,
-      Transaction transaction,
-      int lastRequestTimeEnd,
-      this.lastResponseStatus,
-      this.lastResponseError})
+      {required ArweaveApi api,
+      required int chunkIndex,
+      required bool txPosted,
+      required Transaction transaction,
+      required int lastRequestTimeEnd,
+      required this.lastResponseStatus,
+      required this.lastResponseError})
       : _api = api,
         _chunkIndex = chunkIndex,
         _txPosted = txPosted,
@@ -64,8 +64,8 @@ class TransactionUploader {
         _lastRequestTimeEnd = lastRequestTimeEnd;
 
   bool get isComplete =>
-      _txPosted && _chunkIndex >= _transaction.chunks.chunks.length;
-  int get totalChunks => _transaction.chunks.chunks.length;
+      _txPosted && _chunkIndex >= _transaction.chunks!.chunks.length;
+  int get totalChunks => _transaction.chunks!.chunks.length;
   int get uploadedChunks => _chunkIndex;
 
   /// The progress of the current upload ranging from 0 to 1.
@@ -178,7 +178,7 @@ class TransactionUploader {
         ? Transaction.fromJson(json['transaction'])
         : null;
 
-    await transaction.setData(data);
+    await transaction!.setData(data);
 
     return TransactionUploader._(
       api: api,

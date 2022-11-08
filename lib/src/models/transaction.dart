@@ -35,8 +35,8 @@ class Transaction implements TransactionBase {
   String _owner;
 
   @override
-  List<Tag> get tags => _tags;
-  List<Tag> _tags;
+  List<Tag> get tags => _tags!;
+  List<Tag>? _tags;
 
   @override
   String get target => _target;
@@ -70,8 +70,8 @@ class Transaction implements TransactionBase {
   String _signature;
 
   @JsonKey(ignore: true)
-  TransactionChunksWithProofs get chunks => _chunks;
-  TransactionChunksWithProofs _chunks;
+  TransactionChunksWithProofs? get chunks => _chunks;
+  TransactionChunksWithProofs? _chunks;
 
   /// This constructor is reserved for JSON serialisation.
   ///
@@ -79,21 +79,21 @@ class Transaction implements TransactionBase {
   /// This constructor will not compute the data size or encode incoming data to Base64 for you.
   Transaction({
     this.format = 2,
-    String id,
-    String lastTx,
-    String owner,
-    List<Tag> tags,
-    String target,
-    BigInt quantity,
-    String data,
-    Uint8List dataBytes,
+    String? id,
+    String? lastTx,
+    String? owner,
+    List<Tag>? tags,
+    String? target,
+    BigInt? quantity,
+    String? data,
+    Uint8List? dataBytes,
     String dataSize = '0',
-    String dataRoot,
-    BigInt reward,
-    String signature,
-  })  : _id = id,
-        _lastTx = lastTx,
-        _owner = owner,
+    String? dataRoot,
+    BigInt? reward,
+    String? signature,
+  })  : _id = id!,
+        _lastTx = lastTx!,
+        _owner = owner!,
         _target = target ?? '',
         _quantity = quantity ?? BigInt.zero,
         _data = data != null
@@ -102,18 +102,18 @@ class Transaction implements TransactionBase {
         _dataSize = dataSize,
         _dataRoot = dataRoot ?? '',
         _reward = reward ?? BigInt.zero,
-        _signature = signature {
+        _signature = signature! {
     _tags = tags ?? [];
   }
 
   /// Constructs a [Transaction] with the specified [DataBundle], computed data size, and appropriate bundle tags.
   factory Transaction.withDataBundle({
-    String owner,
-    List<Tag> tags,
-    String target,
-    BigInt quantity,
-    @required DataBundle bundle,
-    BigInt reward,
+    String? owner,
+    List<Tag>? tags,
+    String? target,
+    BigInt? quantity,
+    required DataBundle bundle,
+    BigInt? reward,
   }) =>
       Transaction.withJsonData(
         owner: owner,
@@ -128,30 +128,30 @@ class Transaction implements TransactionBase {
 
   /// Constructs a [Transaction] with the specified JSON data, computed data size, and Content-Type tag.
   factory Transaction.withJsonData({
-    String owner,
-    List<Tag> tags,
-    String target,
-    BigInt quantity,
-    @required Object data,
-    BigInt reward,
+    String? owner,
+    List<Tag>? tags,
+    String? target,
+    BigInt? quantity,
+    required Object data,
+    BigInt? reward,
   }) =>
       Transaction.withBlobData(
         owner: owner,
         tags: tags,
         target: target,
         quantity: quantity,
-        data: utf8.encode(json.encode(data)),
+        data: Uint8List.fromList(utf8.encode(json.encode(data))),
         reward: reward,
       )..addTag('Content-Type', 'application/json');
 
   /// Constructs a [Transaction] with the specified blob data and computed data size.
   factory Transaction.withBlobData({
-    String owner,
-    List<Tag> tags,
-    String target,
-    BigInt quantity,
-    @required Uint8List data,
-    BigInt reward,
+    String? owner,
+    List<Tag>? tags,
+    String? target,
+    BigInt? quantity,
+    required Uint8List data,
+    BigInt? reward,
   }) =>
       Transaction(
         owner: owner,
@@ -205,7 +205,7 @@ class Transaction implements TransactionBase {
 
     if (data.isNotEmpty) {
       _chunks = await generateTransactionChunks(data);
-      _dataRoot = encodeBytesToBase64(chunks.dataRoot);
+      _dataRoot = encodeBytesToBase64(chunks!.dataRoot);
     } else {
       _chunks = TransactionChunksWithProofs(Uint8List(0), [], []);
     }
@@ -215,8 +215,8 @@ class Transaction implements TransactionBase {
   TransactionChunk getChunk(int index) {
     if (chunks == null) throw StateError('Chunks have not been prepared.');
 
-    final proof = chunks.proofs[index];
-    final chunk = chunks.chunks[index];
+    final proof = chunks!.proofs[index];
+    final chunk = chunks!.chunks[index];
 
     return TransactionChunk(
       dataRoot: dataRoot,

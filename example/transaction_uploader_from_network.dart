@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:arweave/arweave.dart';
 
@@ -16,7 +17,8 @@ void main() async {
   final transaction = await client.transactions.get('<transaction id>');
 
   // Set the data that is meant to be on this transaction.
-  await transaction.setData(utf8.encode('<original data>'));
+  await transaction!
+      .setData(Uint8List.fromList(utf8.encode('<original data>')));
 
   // Upload the original transaction data.
   await for (final upload

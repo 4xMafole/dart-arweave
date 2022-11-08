@@ -13,8 +13,8 @@ DataItem _$DataItemFromJson(Map<String, dynamic> json) {
     target: json['target'] as String,
     nonce: json['nonce'] as String,
     tags: (json['tags'] as List)
-        ?.map((e) => e == null ? null : Tag.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+        .map((e) => Tag.fromJson(e as Map<String, dynamic>))
+        .toList(),
     data: json['data'] as String,
     signature: json['signature'] as String,
   );

@@ -11,7 +11,7 @@ class ArweaveTransactionsApi {
   Future<String> getTransactionAnchor() =>
       _api.get('tx_anchor').then((res) => res.body);
 
-  Future<BigInt> getPrice({int byteSize, String targetAddress}) {
+  Future<BigInt> getPrice({int? byteSize, String? targetAddress}) {
     final endpoint = targetAddress != null
         ? 'price/$byteSize/$targetAddress'
         : 'price/$byteSize';
@@ -21,7 +21,7 @@ class ArweaveTransactionsApi {
   /// Get a transaction by its ID.
   ///
   /// The data field is not included for transaction formats 2 and above, perform a seperate `getData(id)` request to retrieve the data.
-  Future<Transaction> get(String id) async {
+  Future<Transaction?> get(String id) async {
     final res = await _api.get('tx/$id');
 
     if (res.statusCode == 200) {
@@ -38,7 +38,7 @@ class ArweaveTransactionsApi {
   /// and the transaction owner if a wallet is specified,
   Future<Transaction> prepare(
     Transaction transaction, [
-    Wallet wallet,
+    Wallet? wallet,
   ]) async {
     assert(transaction.data != null ||
         (transaction.target != null && transaction.quantity != null));

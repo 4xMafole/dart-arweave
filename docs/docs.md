@@ -13,7 +13,7 @@ Add the dependency in `pubspec.yaml` :
 ```yaml
 dependencies:
   arweave:
-    git: https://github.com/hackyguru/arweave-flutter.git
+    git: https://github.com/4xmafole/arweave-flutter.git
 ```
 
 After adding, make sure you save the file so that all the dependencies get installed automatically.
