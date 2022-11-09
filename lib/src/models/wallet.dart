@@ -12,7 +12,7 @@ import '../utils.dart';
 
 class Wallet {
   RsaKeyPair _keyPair;
-  Wallet({required KeyPair keyPair}) : _keyPair = keyPair as RsaKeyPair;
+  Wallet({required RsaKeyPair keyPair}) : _keyPair = keyPair;
 
   static Future<Wallet> generate() async {
     final secureRandom = FortunaRandom();
@@ -67,7 +67,15 @@ class Wallet {
       }
     });
 
-    return Wallet(keyPair: Jwk.fromJson(jwk).toKeyPair());
+    return Wallet(
+      keyPair: RsaKeyPairData(
+        n: Jwk.fromJson(jwk).n!,
+        e: Jwk.fromJson(jwk).e!,
+        d: Jwk.fromJson(jwk).d!,
+        p: Jwk.fromJson(jwk).p!,
+        q: Jwk.fromJson(jwk).q!,
+      ),
+    );
   }
 
   Map<String, dynamic> toJwk() => Jwk.fromKeyPair(_keyPair).toJson().map(

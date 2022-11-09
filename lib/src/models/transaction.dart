@@ -91,9 +91,9 @@ class Transaction implements TransactionBase {
     String? dataRoot,
     BigInt? reward,
     String? signature,
-  })  : _id = id!,
-        _lastTx = lastTx!,
-        _owner = owner!,
+  })  : _id = id ?? '',
+        _lastTx = lastTx ?? '',
+        _owner = owner ?? '',
         _target = target ?? '',
         _quantity = quantity ?? BigInt.zero,
         _data = data != null
@@ -102,7 +102,7 @@ class Transaction implements TransactionBase {
         _dataSize = dataSize,
         _dataRoot = dataRoot ?? '',
         _reward = reward ?? BigInt.zero,
-        _signature = signature! {
+        _signature = signature ?? '' {
     _tags = tags ?? [];
   }
 

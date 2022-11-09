@@ -51,12 +51,12 @@ class DataItem implements TransactionBase {
     String? data,
     Uint8List? dataBytes,
     String? signature,
-  })  : _id = id!,
+  })  : _id = id ?? '',
         _owner = owner ?? '',
         data = data != null
             ? decodeBase64ToBytes(data)
             : (dataBytes ?? Uint8List(0)),
-        _signature = signature! {
+        _signature = signature ?? '' {
     _tags = tags ?? [];
   }
 

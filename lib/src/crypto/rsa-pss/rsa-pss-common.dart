@@ -14,7 +14,7 @@ Future<Uint8List> rsaPssSign({Uint8List? message, RsaKeyPair? keyPair}) async {
     decodeBytesToBigInt(pk.d),
     decodeBytesToBigInt(pk.p),
     decodeBytesToBigInt(pk.q),
-    decodeBytesToBigInt(pk.e),
+    // decodeBytesToBigInt(pk.e),
   );
 
   final signer = PSSSigner(RSAEngine(), SHA256Digest(), SHA256Digest())
